@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Salih · Backend Engineer</title>
+<meta name="description" content="Salih (voidstackloop): self-taught backend and systems engineer working in Rust, Java and Python. Open to remote roles.">
+<meta name="theme-color" content="#EEF1F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D131C" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Salih · Backend Engineer">
+<meta property="og:description" content="Rust, Java and Python. A WebRTC and live-streaming platform, a Rust accessibility CLI, an LLM tutor on PyPI and an ML data cleaner.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232F4FE0'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='700' text-anchor='middle' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --ink:#101826; --muted:#5A6577; --line:#D5DBE4;
+  --accent:#2F4FE0; --accent-soft:#E3E8FD; --amber:#C97A06; --chip:#F2F4F8;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D131C; --surface:#151D29; --ink:#E7ECF3; --muted:#93A0B3; --line:#263244;
+    --accent:#7D95FF; --accent-soft:#1E2A4F; --amber:#F2B04A; --chip:#1B2533;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D131C; --surface:#151D29; --ink:#E7ECF3; --muted:#93A0B3; --line:#263244;
+  --accent:#7D95FF; --accent-soft:#1E2A4F; --amber:#F2B04A; --chip:#1B2533;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans",system-ui,sans-serif;padding:0 16px 64px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;text-wrap:balance;margin:0;line-height:1.05}
+.label{font:500 12px/1.3 "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:16px;top:16px;background:var(--surface);padding:8px 12px;border-radius:8px}
+
+/* header */
+header{padding-top:56px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end}
+header h1{font-size:clamp(48px,9vw,96px);font-weight:800;letter-spacing:-.03em}
+header h1 span{color:var(--accent)}
+.role{font-size:20px;color:var(--muted);margin:14px 0 0;max-width:36ch}
+.contact{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.gh{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;text-decoration:none;font:500 15px "JetBrains Mono",monospace}
+.gh svg{width:20px;height:20px;fill:currentColor}
+.gh:hover{background:var(--accent);color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;color:var(--muted);font-size:14px}
+.copy{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 13px "JetBrains Mono",monospace;padding:6px 10px;border-radius:8px;cursor:pointer}
+.copy:hover{border-color:var(--accent)}
+.pill{display:inline-flex;gap:6px;align-items:center;font:500 13px "JetBrains Mono",monospace;color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:#1FA56B}
+
+/* sections */
+section{display:flex;flex-direction:column;gap:20px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid var(--line);padding-bottom:10px;flex-wrap:wrap}
+.sec-head h2{font-size:28px;font-weight:700;letter-spacing:-.01em}
+
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.card.feature{grid-column:1/-1;display:grid;grid-template-columns:1.1fr 1fr;gap:28px}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.card h3{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.card.feature h3{font-size:40px}
+.card p{margin:0;color:var(--muted);max-width:60ch}
+.card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.card li::marker{color:var(--accent)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font:500 12px "JetBrains Mono",monospace;background:var(--chip);border:1px solid var(--line);padding:3px 8px;border-radius:6px;color:var(--ink)}
+.repo{font:500 13px "JetBrains Mono",monospace;white-space:nowrap}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.note{font-size:13px;color:var(--muted);border-left:2px solid var(--line);padding-left:10px}
+
+/* escld service map */
+.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
+.svc{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg)}
+.svc b{display:block;font:500 13px "JetBrains Mono",monospace}
+.svc small{color:var(--muted);font-size:12px}
+.svc.rs{border-left:3px solid var(--amber)}
+.svc.jv{border-left:3px solid var(--accent)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);grid-column:1/-1}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat b{display:block;font:700 30px/1 "Bricolage Grotesque",sans-serif;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+
+/* bench chart */
+.bench{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:84px 1fr 64px;gap:10px;align-items:center;font:13px "JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+.track{height:12px;background:var(--chip);border-radius:3px;overflow:hidden}
+.fill{display:block;height:100%;background:var(--accent);border-radius:3px}
+.bar .v{text-align:right;color:var(--ink)}
+.bar .k{color:var(--muted)}
+
+.stack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.stack > div{display:flex;flex-direction:column;gap:8px}
+.about{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.mini{border-top:2px solid var(--ink);padding-top:12px;display:flex;flex-direction:column;gap:6px}
+.mini h3{font-size:20px}
+.mini p{margin:0;color:var(--muted);font-size:15px}
+footer{color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:6px 14px}
+
+@media (max-width:760px){
+  header,.card.feature{grid-template-columns:1fr}
+  .projects,.stack,.about{grid-template-columns:1fr}
+  .card{padding:20px}
+  .card.feature h3{font-size:34px}
+  header{padding-top:40px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .fill{animation:grow .9s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+  @keyframes grow{from{transform:scaleX(.15)}to{transform:scaleX(1)}}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#work">Skip to projects</a>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="label">Self-taught software engineer</div>
+      <h1>Salih<span>.</span></h1>
+      <p class="role">Backend and systems engineer. I build complete, documented, tested software in Rust, Java and Python, and I measure the results.</p>
+    </div>
+    <div class="contact">
+      <a class="gh" href="https://github.com/voidstackloop" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        github.com/voidstackloop
+      </a>
+      <div class="row">
+        <a class="mono" id="email" href="mailto:salihyilboga98@gmail.com">salihyilboga98@gmail.com</a>
+        <button class="copy" id="copy-email" type="button">Copy email</button>
+      </div>
+      <div class="row"><span class="pill"><span class="dot"></span>Open to remote backend roles</span></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="work">
+    <div class="sec-head"><h2 id="work">Selected projects</h2><span class="label">4 repos · all public on GitHub</span></div>
+    <div class="projects">
+
+      <article class="card feature">
+        <div class="col">
+          <div class="top">
+            <div class="label">Distributed system · 8 services</div>
+            <a class="repo" href="https://github.com/voidstackloop/escld" target="_blank" rel="noopener">View repo ↗</a>
+          </div>
+          <h3>escld</h3>
+          <p>A social media platform with posts, follows and moderation, plus real-time chat, WebRTC video calls and live streaming.</p>
+          <ul>
+            <li>RTMP live-streaming server written from scratch in Rust: handshake, chunk streams, AMF0 and AMF3, then HLS through S3 and CloudFront at about 2 to 4 seconds of latency.</li>
+            <li>WebRTC group calls on a Rust SFU with screen share, in-call chat and moderator-only recording.</li>
+            <li>Spring Boot API with a ranked feed, Redis-backed rate limiting and a transactional outbox to Kafka.</li>
+            <li>Queue-driven workers for video transcoding and feed fan-out, autoscaled on queue depth.</li>
+          </ul>
+          <div class="stats">
+            <div class="stat"><b>8</b><span>services</span></div>
+            <div class="stat"><b>20</b><span>AWS CDK stacks</span></div>
+            <div class="stat"><b>44.8k</b><span>lines of code</span></div>
+          </div>
+          <p class="note">Designed and tested locally: runs end to end with one <span class="mono">docker compose up</span>. The AWS infrastructure is written in CDK and checked with <span class="mono">cdk synth</span> and unit tests.</p>
+          <div class="tags"><span class="tag">Rust</span><span class="tag">Java 25</span><span class="tag">Spring Boot 4</span><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">AWS CDK</span></div>
+        </div>
+        <div class="map" aria-label="escld services">
+          <div class="svc"><b>frontend</b><small>React SPA</small></div>
+          <div class="svc jv"><b>backend</b><small>Spring Boot REST API</small></div>
+          <div class="svc rs"><b>ws-sfu</b><small>WebRTC SFU + chat</small></div>
+          <div class="svc rs"><b>rtmp</b><small>Stream ingest → HLS</small></div>
+          <div class="svc"><b>worker</b><small>ffmpeg transcoding</small></div>
+          <div class="svc"><b>feed-worker</b><small>Fan-out + search index</small></div>
+          <div class="svc"><b>analytics</b><small>Trending via Redis</small></div>
+          <div class="svc"><b>infra</b><small>AWS CDK, 20 stacks</small></div>
+          <div class="legend"><span><i style="background:var(--accent)"></i>Java</span><span><i style="background:var(--amber)"></i>Rust</span><span><i style="background:var(--line)"></i>TypeScript</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="top">
+          <div class="label">Rust CLI · v0.1.0</div>
+          <a class="repo" href="https://github.com/voidstackloop/formwatch" target="_blank" rel="noopener">View repo ↗</a>
+        </div>
+        <h3>formwatch</h3>
+        <p>Tests public-service forms (permits, benefits, licenses) for broken submissions, accessibility failures, bad mobile layouts and lost input.</p>
+        <ul>
+          <li>Runs 13 checks per form in headless Chrome, including axe-core.</li>
+          <li>Walks multi-step wizards; never submits unless you opt in.</li>
+          <li>HTML reports, a GitHub Action, Docker image and Prometheus metrics.</li>
+          <li>Released binaries for Linux, macOS and Windows.</li>
+        </ul>
+        <div class="bench" aria-label="Benchmark: 35 forms, median seconds">
+          <div class="label">35 forms · median seconds</div>
+          <div class="bar"><span class="k">1 worker</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="v">47.85 s</span></div>
+          <div class="bar"><span class="k">4 workers</span><span class="track"><span class="fill" style="width:28.1%"></span></span><span class="v">13.43 s</span></div>
+          <div class="bar"><span class="k">8 workers</span><span class="track"><span class="fill" style="width:17%"></span></span><span class="v">8.14 s</span></div>
+        </div>
+        <div class="tags"><span class="tag">Rust 2024</span><span class="tag">Chrome DevTools</span><span class="tag">axe-core</span><span class="tag">GitHub Actions</span></div>
+      </article>
+
+      <article class="card">
+        <div class="top">
+          <div class="label">Python · on PyPI</div>
+          <a class="repo" href="https://github.com/voidstackloop/expert-mentor" target="_blank" rel="noopener">View repo ↗</a>
+        </div>
+        <h3>expert-mentor</h3>
+        <p>Turns any LLM into a tutor for any field, and remembers what you have learned between sessions.</p>
+        <ul>
+          <li>Works with Claude, ChatGPT, Gemini, Ollama and llama.cpp.</li>
+          <li>Standard library only, with no runtime dependencies.</li>
+          <li>Learner memory, transcript review and spaced-repetition flashcards.</li>
+          <li>Install with <span class="mono">pipx install expert-mentor</span>.</li>
+        </ul>
+        <div class="stats">
+          <div class="stat"><b>5</b><span>LLM providers</span></div>
+          <div class="stat"><b>0</b><span>runtime dependencies</span></div>
+        </div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">LLM APIs</span><span class="tag">Prompt caching</span><span class="tag">PyPI</span></div>
+      </article>
+
+      <article class="card feature">
+        <div class="col">
+          <div class="top">
+            <div class="label">ML data pipeline · Python + Rust</div>
+            <a class="repo" href="https://github.com/voidstackloop/buffdata" target="_blank" rel="noopener">View repo ↗</a>
+          </div>
+          <h3>buffdata</h3>
+          <p>Cleans AI training data before you train on it. It validates and deduplicates text datasets, then proves the result with reproducible PyTorch benchmarks on real Hugging Face data.</p>
+          <ul>
+            <li>Recovered an average of 8.14 accuracy points across 5 datasets at 10k, 25k and 50k rows.</li>
+            <li>Stayed within 0.10 points on data that was already clean, so it does no harm.</li>
+            <li>Cut training time by about 49% by removing invalid and duplicate rows.</li>
+            <li>Managed runs with snapshots, history, resume, and a team dashboard with OIDC login.</li>
+          </ul>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Rust worker</span><span class="tag">PyTorch</span><span class="tag">PostgreSQL</span><span class="tag">Terraform</span><span class="tag">Helm</span></div>
+        </div>
+        <div class="bench" aria-label="Accuracy recovered per dataset, average of 10k, 25k and 50k rows">
+          <div class="label">Accuracy recovered · points</div>
+          <div class="bar"><span class="k">dbpedia</span><span class="track"><span class="fill" style="width:95.9%"></span></span><span class="v">+10.29</span></div>
+          <div class="bar"><span class="k">yahoo</span><span class="track"><span class="fill" style="width:84%"></span></span><span class="v">+9.01</span></div>
+          <div class="bar"><span class="k">ag_news</span><span class="track"><span class="fill" style="width:79.6%"></span></span><span class="v">+8.54</span></div>
+          <div class="bar"><span class="k">yelp</span><span class="track"><span class="fill" style="width:61.4%"></span></span><span class="v">+6.59</span></div>
+          <div class="bar"><span class="k">amazon</span><span class="track"><span class="fill" style="width:58.3%"></span></span><span class="v">+6.26</span></div>
+          <div class="stats" style="margin-top:12px">
+            <div class="stat"><b>+8.14</b><span>avg points recovered</span></div>
+            <div class="stat"><b>−49%</b><span>training time</span></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="how">
+    <div class="sec-head"><h2 id="how">How I work</h2></div>
+    <div class="about">
+      <div class="mini"><h3>Ship the whole thing</h3><p>I aim for software a stranger can install and run: clear READMEs, install steps, tests and releases.</p></div>
+      <div class="mini"><h3>Measure, then claim</h3><p>The benchmark numbers on this page come from scripts in the repos, so anyone can rerun them.</p></div>
+      <div class="mini"><h3>Write down the why</h3><p>Design trade-offs and known limits are documented next to the code, not left to guesswork.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="stack">
+    <div class="sec-head"><h2 id="stack">Stack</h2></div>
+    <div class="stack">
+      <div><div class="label">Languages</div><div class="tags"><span class="tag">Rust</span><span class="tag">Java</span><span class="tag">Python</span><span class="tag">TypeScript</span><span class="tag">SQL</span></div></div>
+      <div><div class="label">Backend &amp; data</div><div class="tags"><span class="tag">tokio</span><span class="tag">Spring Boot</span><span class="tag">WebRTC</span><span class="tag">Kafka</span><span class="tag">PostgreSQL</span><span class="tag">DynamoDB</span><span class="tag">Elasticsearch</span><span class="tag">Redis</span></div></div>
+      <div><div class="label">Cloud &amp; tooling</div><div class="tags"><span class="tag">AWS</span><span class="tag">CDK</span><span class="tag">Docker</span><span class="tag">GitHub Actions</span><span class="tag">Prometheus</span><span class="tag">Grafana</span></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Salih</span>
+    <a href="https://github.com/voidstackloop" target="_blank" rel="noopener">github.com/voidstackloop</a>
+    <a href="mailto:salihyilboga98@gmail.com">salihyilboga98@gmail.com</a>
+  </footer>
+</div>
+
+<script>
+document.getElementById('copy-email').addEventListener('click', function(){
+  var btn=this, text=document.getElementById('email').textContent;
+  function done(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy email'},1600)}
+  function fallback(){var r=document.createRange();r.selectNodeContents(document.getElementById('email'));var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected, press Ctrl+C'}
+  try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
+});
+</script>
+</body>
+</html>
