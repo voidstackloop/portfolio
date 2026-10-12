@@ -1,6 +1,6 @@
 # portfolio
 
-Salih's portfolio site, built with Vite, React 19, TypeScript, Tailwind CSS v4 and shadcn/ui.
+Voidstackloop's portfolio site, built with Vite, React 19, TypeScript, Tailwind CSS v4 and shadcn/ui.
 
 ## Develop
 
