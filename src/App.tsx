@@ -36,7 +36,7 @@ export default function App() {
 
         <section aria-labelledby="projects-title" id="projects" className="flex scroll-mt-20 flex-col gap-6">
           <SectionHead id="projects-title" title="Selected projects" aside={`${projects.length} repos · all public on GitHub`} />
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="flex flex-col gap-8">
             {projects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}

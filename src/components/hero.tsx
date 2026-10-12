@@ -8,14 +8,21 @@ import { Card } from '@/components/ui/card'
 import { profile, projects } from '@/data/site'
 
 const proof = [
-  { value: '44.8k', label: 'lines of code in escld, an 8-service system', project: 'escld' },
+  { value: '8 services', label: 'in escld, across Rust, Java and TypeScript, joined by queues and an outbox', project: 'escld' },
   { value: '47.85 s → 8.14 s', label: 'formwatch on 35 forms, 1 worker to 8', project: 'formwatch' },
   { value: '+8.14 pts', label: 'average accuracy recovered by buffdata', project: 'buffdata' },
 ]
 
 export function Hero() {
   return (
-    <section id="top" aria-labelledby="hero-title" className="pt-14 pb-4 sm:pt-20">
+    <section id="top" aria-labelledby="hero-title" className="relative pt-14 pb-4 sm:pt-20">
+      <img
+        src="/logo-512.png"
+        alt=""
+        width={256}
+        height={256}
+        className="pointer-events-none absolute top-20 right-0 hidden size-56 rounded-full opacity-90 lg:block xl:size-64"
+      />
       <div className="flex flex-col gap-6">
         <Badge variant="outline" className="gap-2 rounded-full px-3 py-1 font-mono text-xs font-medium">
           <span aria-hidden="true" className="size-2 rounded-full bg-emerald-500" />

@@ -13,12 +13,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
         <a href="#top" className="flex items-center gap-2 font-display text-lg font-bold tracking-tight">
-          <span
-            aria-hidden="true"
-            className="grid size-7 place-items-center rounded-md bg-primary text-sm text-primary-foreground"
-          >
-            S
-          </span>
+          <img src="/logo-96.png" alt="" width={32} height={32} className="size-8 rounded-full" />
           {profile.name}
         </a>
         <div className="flex items-center gap-1">

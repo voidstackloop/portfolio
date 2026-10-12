@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 
 import { BarChart } from '@/components/bar-chart'
+import { FlowView } from '@/components/flow'
 import { InlineCode } from '@/components/inline-code'
 import { ServiceMap } from '@/components/service-map'
 import { Badge } from '@/components/ui/badge'
@@ -9,20 +10,15 @@ import type { Project } from '@/data/site'
 import { cn } from '@/lib/utils'
 
 export function ProjectCard({ project }: { project: Project }) {
-  const feature = project.layout === 'feature'
   const aside = project.services ? (
     <ServiceMap services={project.services} />
-  ) : project.chart && feature ? (
+  ) : project.chart ? (
     <BarChart title={project.chart.title} caption={project.chart.caption} bars={project.chart.bars} />
   ) : null
 
   return (
-    <Card
-      id={project.slug}
-      className={cn('scroll-mt-20 gap-0 p-0', feature && 'md:col-span-2')}
-      aria-labelledby={`${project.slug}-title`}
-    >
-      <div className={cn('grid gap-8 p-6 sm:p-7', feature && aside && 'lg:grid-cols-[1.15fr_1fr] lg:gap-10')}>
+    <Card id={project.slug} className="scroll-mt-20 gap-0 p-0" aria-labelledby={`${project.slug}-title`}>
+      <div className={cn('grid gap-8 p-6 sm:p-7', aside && 'lg:grid-cols-[1.15fr_1fr] lg:gap-10')}>
         <div className="flex min-w-0 flex-col gap-5">
           <div className="flex items-start justify-between gap-3">
             <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">{project.kicker}</p>
@@ -37,10 +33,7 @@ export function ProjectCard({ project }: { project: Project }) {
               <span className="sr-only">for {project.name} on GitHub (opens in a new tab)</span>
             </a>
           </div>
-          <h3
-            id={`${project.slug}-title`}
-            className={cn('font-bold tracking-tight', feature ? 'text-4xl sm:text-[2.5rem]' : 'text-3xl')}
-          >
+          <h3 id={`${project.slug}-title`} className="text-4xl font-bold tracking-tight sm:text-[2.5rem]">
             {project.name}
           </h3>
           <p className="max-w-[60ch] text-muted-foreground">{project.summary}</p>
@@ -66,9 +59,6 @@ export function ProjectCard({ project }: { project: Project }) {
               <InlineCode text={project.note} />
             </p>
           )}
-          {project.chart && !feature && (
-            <BarChart title={project.chart.title} caption={project.chart.caption} bars={project.chart.bars} />
-          )}
           <ul className="flex flex-wrap gap-1.5" aria-label={`${project.name} technologies`}>
             {project.tags.map((tag) => (
               <li key={tag}>
@@ -80,6 +70,37 @@ export function ProjectCard({ project }: { project: Project }) {
           </ul>
         </div>
         {aside && <div className="min-w-0">{aside}</div>}
+      </div>
+
+      <div className="flex flex-col gap-8 border-t bg-muted/40 p-6 sm:p-7">
+        <section aria-labelledby={`${project.slug}-arch`} className="flex flex-col gap-5">
+          <h4 id={`${project.slug}-arch`} className="font-display text-xl font-bold tracking-tight">
+            How it&rsquo;s built
+          </h4>
+          <div
+            className={cn(
+              'grid gap-8',
+              project.flows.length > 1 && 'md:grid-cols-2 lg:grid-cols-3',
+            )}
+          >
+            {project.flows.map((flow) => (
+              <FlowView key={flow.title} flow={flow} />
+            ))}
+          </div>
+        </section>
+        <section aria-labelledby={`${project.slug}-decisions`} className="flex flex-col gap-5">
+          <h4 id={`${project.slug}-decisions`} className="font-display text-xl font-bold tracking-tight">
+            Design decisions
+          </h4>
+          <dl className="grid gap-x-10 gap-y-6 md:grid-cols-2">
+            {project.decisions.map((decision) => (
+              <div key={decision.title} className="flex flex-col gap-1.5">
+                <dt className="font-semibold">{decision.title}</dt>
+                <dd className="text-sm text-muted-foreground">{decision.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </div>
     </Card>
   )

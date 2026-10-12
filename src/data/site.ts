@@ -18,9 +18,13 @@ export type Stat = { value: string; label: string }
 export type Bar = { label: string; value: number; display: string }
 export type Service = { name: string; detail: string; lang: 'rust' | 'java' | 'ts' }
 
+// A flow is one path through the system. `steps` renders as a numbered path; `chips`
+// renders as a left-to-right pipeline, for stages that are short labels.
+export type Flow = { title: string; kind?: 'steps' | 'chips'; steps: string[]; note?: string }
+export type Decision = { title: string; body: string }
+
 export type Project = {
   slug: string
-  layout: 'feature' | 'card'
   name: string
   kicker: string
   repo: string
@@ -31,12 +35,13 @@ export type Project = {
   note?: string
   services?: Service[]
   chart?: { title: string; caption: string; unit: string; bars: Bar[]; lowerIsBetter?: boolean }
+  flows: Flow[]
+  decisions: Decision[]
 }
 
 export const projects: Project[] = [
   {
     slug: 'escld',
-    layout: 'feature',
     name: 'escld',
     kicker: 'Distributed system · 8 services',
     repo: 'https://github.com/voidstackloop/escld',
@@ -51,7 +56,6 @@ export const projects: Project[] = [
     stats: [
       { value: '8', label: 'services' },
       { value: '20', label: 'AWS CDK stacks' },
-      { value: '44.8k', label: 'lines of code' },
     ],
     note: 'Designed and tested locally: runs end to end with one `docker compose up`. The AWS infrastructure is written in CDK and checked with `cdk synth` and unit tests.',
     tags: ['Rust', 'Java 25', 'Spring Boot 4', 'React 19', 'TypeScript', 'AWS CDK'],
@@ -65,10 +69,55 @@ export const projects: Project[] = [
       { name: 'analytics', detail: 'Trending via Redis', lang: 'ts' },
       { name: 'infra', detail: 'AWS CDK, 20 stacks', lang: 'ts' },
     ],
+    flows: [
+      {
+        title: 'Posting a video',
+        steps: [
+          'The browser uploads straight to S3 with a presigned URL.',
+          'The backend saves the post as PROCESSING and queues a transcode job.',
+          'An ffmpeg worker turns it into HLS and uploads it.',
+          'The post flips to READY; after 3 failed attempts the job goes to a dead-letter queue.',
+        ],
+      },
+      {
+        title: 'Going live',
+        steps: [
+          'The backend mints a stream key and announces the stream with a title.',
+          'OBS publishes over RTMP to the Rust server.',
+          'The server checks the key against Postgres and pipes the stream into ffmpeg as HLS.',
+          'Segments are synced to S3 and served by CloudFront.',
+        ],
+      },
+      {
+        title: 'Analytics without lost events',
+        steps: [
+          'The business write and an outbox row commit in one Postgres transaction.',
+          'A leased relay publishes outbox rows to Kafka and retries with the same event ID.',
+          'A sink loads the events into BigQuery.',
+        ],
+      },
+    ],
+    decisions: [
+      {
+        title: 'Split by state, not by feature',
+        body: 'The API, workers and analytics are stateless and scale by adding replicas. The SFU keeps each call room in one process, and clients reach it on a fixed UDP port range, so it runs on one EC2 instance with an Elastic IP. It scales up first, with metrics to show when that stops being enough.',
+      },
+      {
+        title: 'Slow work never blocks a request',
+        body: 'Transcoding, embeddings, search indexing and feed fan-out run off queues and pub/sub. A failure in any of them never fails the user’s post.',
+      },
+      {
+        title: 'Authenticate with what the protocol has',
+        body: 'RTMP has no login step, so the stream key is the credential: a rotating UUID checked against Postgres. A valid key is still refused unless the user has announced a stream, so nothing goes live without a title.',
+      },
+      {
+        title: 'Know the limits and write them down',
+        body: 'True low-latency HLS needs partial segments that ffmpeg’s HLS muxer does not offer, and a CDN that can hold playlist requests open, which S3 and CloudFront cannot. So latency is squeezed with 1 s segments, 100 ms upload polling and a 1 s CDN cache, and the docs say what is not built.',
+      },
+    ],
   },
   {
     slug: 'formwatch',
-    layout: 'card',
     name: 'formwatch',
     kicker: 'Rust CLI · v0.1.0',
     repo: 'https://github.com/voidstackloop/formwatch',
@@ -92,10 +141,41 @@ export const projects: Project[] = [
       ],
     },
     tags: ['Rust 2024', 'Chrome DevTools', 'axe-core', 'GitHub Actions'],
+    flows: [
+      {
+        title: 'One run',
+        kind: 'chips',
+        steps: [
+          'forms.yml or a URL',
+          'Sharded across Chrome sessions, rate-limited per host',
+          '13 checks per form',
+          'Diff against the last run',
+          'HTML, JUnit, SARIF, metrics, webhook',
+        ],
+        note: 'Each check returns Pass, Warn or Fail, and every non-pass keeps a screenshot as evidence.',
+      },
+    ],
+    decisions: [
+      {
+        title: 'Chrome DevTools Protocol, not WebDriver',
+        body: 'WebDriver needs a separate driver binary on the PATH. Driving Chrome directly through an async Rust client keeps it one binary to install and lets many forms run at once. The options are compared in a written ADR.',
+      },
+      {
+        title: 'Reuse axe-core, do not rewrite WCAG',
+        body: 'Accessibility rules are a large, easy-to-get-subtly-wrong surface. Injecting axe-core means the rules stay current by updating one file, and formwatch’s own code stays orchestration.',
+      },
+      {
+        title: 'Only new problems fail the build',
+        body: 'Accepted findings are stored as a baseline, so a CI run fails on new or worse findings instead of on every known issue. History also separates real regressions from flaky checks.',
+      },
+      {
+        title: 'Safe against real sites by default',
+        body: 'It never submits a real form unless you pass an explicit flag and accept the terms, paces requests per host, and writes an audit log.',
+      },
+    ],
   },
   {
     slug: 'buffdata',
-    layout: 'card',
     name: 'buffdata',
     kicker: 'ML data pipeline · Python + Rust',
     repo: 'https://github.com/voidstackloop/buffdata',
@@ -124,10 +204,35 @@ export const projects: Project[] = [
       ],
     },
     tags: ['Python', 'Rust worker', 'PyTorch', 'PostgreSQL', 'Terraform', 'Helm'],
+    flows: [
+      {
+        title: 'Seven stages, in order',
+        kind: 'chips',
+        steps: ['validate', 'PII scrub', 'profile', 'dedup', 'score and refine', 'filter', 'classify'],
+        note: 'Every dropped row lands in a rejected file with a reason. Each stage checkpoints, so an interrupted run resumes at the next stage instead of row zero.',
+      },
+    ],
+    decisions: [
+      {
+        title: 'Prove the gain before publishing',
+        body: 'A PyTorch proxy classifier checks that a candidate dataset actually improves accuracy before it is published, so the claim is measured and not assumed.',
+      },
+      {
+        title: 'A strict accuracy contract',
+        body: 'In strict mode every valid labeled row survives with byte-identical text and labels, and the benchmark numbers are measured under that contract.',
+      },
+      {
+        title: 'One LLM contract, a network kill switch',
+        body: 'Every stage calls the same small set of methods whether the provider is Gemini, OpenAI, Anthropic, Azure, Bedrock or a local server. A strict network policy swaps in a client that raises on every call, so a stage that needs the network fails loudly instead of quietly reaching out.',
+      },
+      {
+        title: 'Rust only where it earns its place',
+        body: 'A small Rust binary replaces the worker process for managed runs: it claims runs, applies per-project secrets, and supervises the executor with heartbeat, deadline and process-group kill. The optimization logic stays in Python.',
+      },
+    ],
   },
   {
     slug: 'modelforge',
-    layout: 'feature',
     name: 'ModelForge',
     kicker: 'Desktop app · Electron, TypeScript + Rust',
     repo: 'https://github.com/voidstackloop/modelforge',
@@ -138,11 +243,6 @@ export const projects: Project[] = [
       'Agent mode lets a model read and write files and run commands in a folder you choose; every action needs your approval, and commands run in an OS sandbox where one exists.',
       'MCP client rebuilt on the official SDK, with JSON Schema validation, OAuth 2.1 with PKCE and per-tool trust.',
       'Optional AES-256-GCM encryption at rest, a hash-chained audit log, and an emergency red-flag check that runs before any model call.',
-    ],
-    stats: [
-      { value: '44k', label: 'lines of TypeScript' },
-      { value: '4.4k', label: 'lines of Rust' },
-      { value: '197', label: 'test files' },
     ],
     note: 'Not a certified medical product. The repo documents it as for research and clinician-supervised evaluation only, and lists what still needs licensed data and clinical validation.',
     tags: ['Electron', 'React', 'TypeScript', 'Rust (napi-rs)', 'llama.cpp', 'vLLM', 'MCP'],
@@ -156,6 +256,37 @@ export const projects: Project[] = [
         { label: 'Rust addon', value: 0.3, display: '~0.3 s' },
       ],
     },
+    flows: [
+      {
+        title: 'Process model',
+        kind: 'chips',
+        steps: [
+          'React UI, no Node access',
+          'Typed preload bridge',
+          'Electron main process',
+          'Models, files, shell, MCP servers, Rust addon',
+        ],
+        note: 'Every capability the UI has exists because a specific IPC channel was added on purpose. There is no generic escape hatch.',
+      },
+    ],
+    decisions: [
+      {
+        title: 'The UI can only ask',
+        body: 'Context isolation is on and Node integration is off. Every provider call goes through the main process, so API keys never reach the UI and the content security policy can block its network access outright.',
+      },
+      {
+        title: 'Safety that does not depend on the model',
+        body: 'A system prompt asks for hedged, structured answers, but a prompt is not a guarantee. So the emergency red-flag check scans the user’s own message in code before any model call.',
+      },
+      {
+        title: 'Approve every action, and sandbox the shell',
+        body: 'Agent tool calls are confined to a workspace folder and need per-call approval. Shell commands run in bubblewrap or sandbox-exec where available, and destructive patterns are rejected even if approved.',
+      },
+      {
+        title: 'Rust where file I/O hurts',
+        body: 'A napi-rs addon does atomic JSON writes and the SHA-256 hashing behind the audit chain, and appends a log entry without rewriting the whole file. It falls back to plain TypeScript when the addon is not built.',
+      },
+    ],
   },
 ]
 
