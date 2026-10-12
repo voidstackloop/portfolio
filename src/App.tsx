@@ -105,7 +105,9 @@ export default function App() {
       <footer>
         <Separator />
         <div className="mx-auto flex max-w-5xl flex-wrap gap-x-4 gap-y-1 px-4 py-6 text-sm text-muted-foreground sm:px-6">
-          <span>{profile.name}</span>
+          <span>
+            {profile.name} <span className="font-mono">({profile.handle})</span>
+          </span>
           <a href={profile.github} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:underline">
             {profile.githubLabel}
           </a>
