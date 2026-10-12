@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@fontsource-variable/bricolage-grotesque/wght.css';
+@import '@fontsource-variable/ibm-plex-sans/wght.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-rust: var(--rust);
+  --font-sans: 'IBM Plex Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'IBM Plex Sans Variable', ui-sans-serif, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.968 0.006 255);
+  --foreground: oklch(0.2 0.035 262);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.035 262);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.035 262);
+  --primary: oklch(0.5 0.22 267);
+  --primary-foreground: oklch(0.99 0.003 255);
+  --secondary: oklch(0.94 0.012 258);
+  --secondary-foreground: oklch(0.25 0.04 262);
+  --muted: oklch(0.945 0.008 255);
+  --muted-foreground: oklch(0.47 0.03 258);
+  --accent: oklch(0.925 0.04 268);
+  --accent-foreground: oklch(0.3 0.12 267);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.89 0.012 255);
+  --input: oklch(0.89 0.012 255);
+  --ring: oklch(0.5 0.22 267);
+  --rust: oklch(0.58 0.15 62);
+}
+
+.dark {
+  --background: oklch(0.165 0.022 258);
+  --foreground: oklch(0.94 0.008 255);
+  --card: oklch(0.2 0.024 258);
+  --card-foreground: oklch(0.94 0.008 255);
+  --popover: oklch(0.2 0.024 258);
+  --popover-foreground: oklch(0.94 0.008 255);
+  --primary: oklch(0.74 0.13 270);
+  --primary-foreground: oklch(0.18 0.04 265);
+  --secondary: oklch(0.25 0.026 258);
+  --secondary-foreground: oklch(0.94 0.008 255);
+  --muted: oklch(0.25 0.026 258);
+  --muted-foreground: oklch(0.72 0.025 255);
+  --accent: oklch(0.29 0.06 266);
+  --accent-foreground: oklch(0.9 0.04 268);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.32 0.028 258);
+  --input: oklch(0.32 0.028 258);
+  --ring: oklch(0.74 0.13 270);
+  --rust: oklch(0.8 0.14 78);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-balance;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0.12);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar-fill {
+    transform-origin: left;
+    animation: bar-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
