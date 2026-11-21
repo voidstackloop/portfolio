@@ -13,9 +13,9 @@ npm run lint
 
 ## Edit the content
 
-All copy lives in `src/data/site.ts`: the profile, the projects (with their charts and the escld service map), the principles and the stack. Components in `src/components` only render that data, so adding or removing a project is a change to one file.
+All copy lives in `src/data/site.ts`: the profile, the projects (with their charts and optional service maps), the principles and the stack. Components in `src/components` only render that data, so adding or removing a project is a change to one file.
 
-Every claim on the page has to match the public repos. In particular, escld was designed and tested locally and has never been deployed, so it must not be described as running in production.
+Every claim on the page has to match the public repos. Only public repos are listed, because a private repo's "View repo" link is a 404 for visitors.
 
 ## Deploy on Vercel
 

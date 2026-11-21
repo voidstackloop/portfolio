@@ -81,7 +81,7 @@ export default function App() {
           <SectionHead id="contact-title" title="Get in touch" />
           <div className="flex flex-col gap-5">
             <p className="max-w-[52ch] text-lg text-muted-foreground">
-              I'm looking for a remote backend role in Rust, Java or Python. The fastest way to reach me is email;
+              I'm looking for a remote ML backend or ML infrastructure role in Rust or Python. The fastest way to reach me is email;
               the code is all on GitHub.
             </p>
             <div className="flex flex-wrap items-center gap-3">
