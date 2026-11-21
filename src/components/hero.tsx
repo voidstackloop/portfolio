@@ -8,9 +8,9 @@ import { Card } from '@/components/ui/card'
 import { profile, projects } from '@/data/site'
 
 const proof = [
-  { value: '8 services', label: 'in escld, across Rust, Java and TypeScript, joined by queues and an outbox', project: 'escld' },
-  { value: '47.85 s → 8.14 s', label: 'formwatch on 35 forms, 1 worker to 8', project: 'formwatch' },
-  { value: '+8.14 pts', label: 'average accuracy recovered by buffdata', project: 'buffdata' },
+  { value: '2.9x', label: 'faster AdamW step than PyTorch in Oxideon, a deep learning library in Rust', project: 'oxideon' },
+  { value: '28.2 t/s', label: 'from a 120B MoE model on an 8 GB laptop GPU with extended-strata-moe', project: 'extended-strata-moe' },
+  { value: '~231x', label: 'fewer tokens for an AI agent to answer with project-memory', project: 'project-memory' },
 ]
 
 export function Hero() {
